@@ -89,7 +89,7 @@ let map;
         document.getElementById("map").style.zIndex = "10";
 
         function setLocation(loc) {
-            console.log("Curr location: " + loc.coords.latitude + ", " + loc.coords.longitude)
+            //console.log("Curr location: " + loc.coords.latitude + ", " + loc.coords.longitude)
 
             map = L.map('map').setView([loc.coords.latitude, loc.coords.longitude], 13);
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -118,7 +118,7 @@ let map;
 
             function onMapClick(e) {            //  TODO move to esri.js
                 WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
-                if (WildRydes.marker)       WildRydes.marker.remove();
+                //if (WildRydes.marker)       WildRydes.marker.remove();
                 handlePickupChanged();
 
                 WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
