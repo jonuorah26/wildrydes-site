@@ -102,7 +102,7 @@ let map;
             WildRydes.map.extent = {minLat: b._northEast.lat, minLng: b._northEast.lng,
                 maxLat: b._southWest.lat, maxLng: b._southWest.lng};
 
-            WildRydes.marker  = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
+            //WildRydes.marker  = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
             var myIcon = L.icon({
                 iconUrl: 'images/unicorn-icon.png',
                 iconSize: [25, 25],
@@ -110,21 +110,38 @@ let map;
                 shadowSize: [25, 25],
                 shadowAnchor: [22, 24]
             });
-            WildRydes.unicorn = L.marker([loc.coords.latitude, loc.coords.longitude], {icon: myIcon}).addTo(map);
+            //WildRydes.unicorn = L.marker([loc.coords.latitude, loc.coords.longitude], {icon: myIcon}).addTo(map);
             // WildRydes.marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
 
             // var popup = L.popup();
             map.on('click', onMapClick);
 
-            let count = 1;
+            let count = 0;
+            let startPoint = {marker: null, point: null};
+            let endPoint = {marker: null, point: null};
 
 
             function onMapClick(e) {            //  TODO move to esri.js
-                ++count
+                ++count;
                 WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
-                if (WildRydes.marker)       WildRydes.marker.remove();
-                L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
-                console.log("count: " + count)
+                WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+                switch(count)
+                {
+                    case 1:
+                      startPoint.marker =  WildRydes.marker;
+                      startPoint.point = e.latlng;
+                      break;
+                    case 2:
+                        endPoint.marker = WildRydes.marker;
+                        endPoint.point = e.latlng;
+                        break;
+                    default:
+                        startPoint.marker.remove();
+                        endPoint.marker.remove();
+                        break;
+                }
+                //if (WildRydes.marker)       WildRydes.marker.remove();
+                //console.log("count: " + count)
                 /*
                 if(count > 2){ 
                     while(count){
@@ -137,7 +154,7 @@ let map;
                 */
                 handlePickupChanged();
 
-                WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+                
 
                 // popup
                 //     .setLatLng(e.latlng)
