@@ -83,11 +83,14 @@ let map;
 
         window.navigator.geolocation
             .getCurrentPosition(setLocation);
+            
 
         //  put the map behind the updates list
         document.getElementById("map").style.zIndex = "10";
 
         function setLocation(loc) {
+            console.log("Curr location: " + loc.coords.latitude + ", " + loc.coords.longitude)
+
             map = L.map('map').setView([loc.coords.latitude, loc.coords.longitude], 13);
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
