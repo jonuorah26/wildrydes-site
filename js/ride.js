@@ -116,14 +116,19 @@ let map;
             // var popup = L.popup();
             map.on('click', onMapClick);
 
-            let count = 0;
+            let count = 1;
 
 
             function onMapClick(e) {            //  TODO move to esri.js
                 ++count
                 WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
                 //if (WildRydes.marker)       WildRydes.marker.remove();
-                if(count > 2){ WildRydes.marker.remove(); count = 0;}
+                if(count > 2){ 
+                    while(WildRydes.marker){
+                        WildRydes.marker.remove();
+                    } 
+                    count = 0;
+                }
                 handlePickupChanged();
 
                 WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
