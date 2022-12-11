@@ -15,6 +15,9 @@ WildRydes.map = WildRydes.map || {};
         let latInc = (dest.latitude - latlng.lat) / 100;
         let lngInc = (dest.longitude - latlng.lng) / 100;
 
+        console.log("Origin lat:" + origin.latitude)
+        console.log("Origin lon:" + origin.longitude)
+
         clearInterval(id);
         id = setInterval(frame, 5);
         function frame() {
