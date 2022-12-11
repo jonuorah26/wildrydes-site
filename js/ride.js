@@ -124,8 +124,9 @@ let map;
                 WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
                 //if (WildRydes.marker)       WildRydes.marker.remove();
                 if(count > 2){ 
-                    while(WildRydes.marker){
+                    while(count){
                         WildRydes.marker.remove();
+                        --count;
                     } 
                     count = 0;
                 }
