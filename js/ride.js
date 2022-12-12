@@ -119,6 +119,7 @@ let map;
             let count = 0;
             let startPoint = {marker: null, point: null};
             let endPoint = {marker: null, point: null};
+            let fare
 
 
             function onMapClick(e) {            //  TODO move to esri.js
@@ -144,6 +145,11 @@ let map;
                         count = 0;
                         break;
                 }
+
+                if(count == 0)
+                {
+                    fare = CalculateFare(startPoint.point, endPoint.point);
+                }
                 //if (WildRydes.marker)       WildRydes.marker.remove();
                 //console.log("count: " + count)
                 /*
@@ -165,6 +171,53 @@ let map;
                 //     .setContent("You clicked the map at " + e.latlng.toString())
                 //     .openOn(map);
             }
+
+            function CalculateFare(start, end)
+            {
+                let date = new Date();
+                let rate = 0;
+                let fare;
+                
+                let day = date.getDay();
+                (day > 0 && day < 5) ? (rate += 1.50) : (rate += 2.50); //more expensive rate for weekends (includes Friday because thats when the partying starts)
+                let hour = date.getHours();
+                if(hour >=0 && hour <= 6) // late night/early morning hours
+                {
+                    rate += 1.00
+                }
+                else if(hour >= 7 && hour < 12) // Morning hours
+                {
+                    rate += 0.75
+                }
+                else if(hour >= 12 && hour < 18) // Afternoon hours
+                {
+                    rate += 0.60
+                }
+                else // Evening/night hours
+                {
+                    rate += 0.85
+                }
+                let month = date.getMonth();
+                let dateNum = date.getDate();
+                if(month == 11 && (dateNum == 24 || dateNum == 25)) //Extra charge rate on Christmas and Christmas Eve!
+                {
+                    switch(dateNum)
+                    {
+                        case 24: //Christmas Eve extra rate
+                            rate += 3.00;
+                            break;
+                        case 25: //Christmas extra rate
+                            rate += 4.00
+                    }
+                }
+
+                let dist = L.distance(start, end);
+
+                fare = (dist * rate) / 2000; //final fare in $
+
+                return fare;
+
+            }
         }
     });
 
@@ -172,7 +225,7 @@ let map;
     //      enable the Pickup button and set text to Request Unicorn
     function handlePickupChanged() {
         var requestButton = $('#request');
-        requestButton.text('Request Unicorn');
+        requestButton.text('Request Unicorn\nFare: $50.00');
         requestButton.prop('disabled', false);
     }
 
