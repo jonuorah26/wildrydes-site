@@ -120,6 +120,7 @@ let fare;
             let count = 0;
             let startPoint = {marker: null, point: null};
             let endPoint = {marker: null, point: null};
+            let _polyline;
             
 
             function onMapClick(e) {            //  TODO move to esri.js
@@ -143,6 +144,10 @@ let fare;
                         endPoint.point = e.latlng;
                         break;
                     default:
+                        if (_polyline) {
+                            map.removeLayer(_polyline);
+                            _polyline = null;
+                        }
                         startPoint.marker.remove();
                         endPoint.marker.remove();
                         count = 0;
@@ -152,6 +157,11 @@ let fare;
 
                 if(count == 2)
                 {
+                    _polyline = L.polyline([startPoint.point, endPoint.point], {
+                        color: 'red'
+                    });
+                    _polyline.addTo(map);
+
                     fare = CalculateFare(startPoint.point, endPoint.point);
                     handlePickupChanged();
                 }
@@ -216,7 +226,7 @@ let fare;
                     }
                 }
 
-                let dist = L.distance(start, end);
+                let dist = map.distance(start, end);
 
                 fare = (dist * rate) / 2000; //final fare in $
 
