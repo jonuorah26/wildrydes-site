@@ -225,7 +225,7 @@ let map;
     //      enable the Pickup button and set text to Request Unicorn
     function handlePickupChanged() {
         var requestButton = $('#request');
-        requestButton.text('Request Unicorn\nFare: $50.00');
+        requestButton.html('Request Unicorn\nFare: $50.00');
         requestButton.prop('disabled', false);
     }
 
