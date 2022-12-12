@@ -127,19 +127,18 @@ let count = 0;
                 ++count;
                 var requestButton = $('#request');
                 
-                if(count <= 2)
-                {
-                    //WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
-                    WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-                }
+                //WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
+
                 switch(count)
                 {
                     case 1:
-                      startPoint.marker =  WildRydes.marker;
-                      startPoint.point = e.latlng;
-                      requestButton.html('Set drop-off');
-                      break;
+                        WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+                        startPoint.marker =  WildRydes.marker;
+                        startPoint.point = e.latlng;
+                        requestButton.html('Set drop-off');
+                        break;
                     case 2:
+                        WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng], {color: 'green'}).addTo(map);
                         endPoint.marker = WildRydes.marker;
                         endPoint.point = e.latlng;
                         break;
