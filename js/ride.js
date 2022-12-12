@@ -4,6 +4,9 @@ var WildRydes = window.WildRydes || {};
 WildRydes.map = WildRydes.map || {};
 let map;
 let fare;
+let startPoint = {marker: null, point: null};
+let endPoint = {marker: null, point: null};
+let _polyline;
 
 (function rideScopeWrapper($) {
     var authToken;
@@ -118,10 +121,6 @@ let fare;
             map.on('click', onMapClick);
 
             let count = 0;
-            let startPoint = {marker: null, point: null};
-            let endPoint = {marker: null, point: null};
-            let _polyline;
-            
 
             function onMapClick(e) {            //  TODO move to esri.js
                 ++count;
@@ -129,7 +128,7 @@ let fare;
                 
                 if(count <= 2)
                 {
-                    WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
+                    //WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
                     WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
                 }
                 switch(count)
@@ -161,6 +160,8 @@ let fare;
                         color: 'red'
                     });
                     _polyline.addTo(map);
+
+                    WildRydes.map.selectedPoint = {longitude: startPoint.point.lng, latitude: startPoint.point.lat};
 
                     fare = CalculateFare(startPoint.point, endPoint.point);
                     handlePickupChanged();
@@ -272,6 +273,11 @@ let fare;
         }
 
         WildRydes.map.animate(origin, dest, callback);
+        if (_polyline) {
+            map.removeLayer(_polyline);
+            _polyline = null;
+        }
+        startPoint.marker?.remove();
     }
 
 
