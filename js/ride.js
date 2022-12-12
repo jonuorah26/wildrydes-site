@@ -7,6 +7,7 @@ let fare;
 let startPoint = {marker: null, point: null};
 let endPoint = {marker: null, point: null};
 let _polyline;
+let count = 0;
 
 (function rideScopeWrapper($) {
     var authToken;
@@ -120,7 +121,7 @@ let _polyline;
             // var popup = L.popup();
             map.on('click', onMapClick);
 
-            let count = 0;
+            
 
             function onMapClick(e) {            //  TODO move to esri.js
                 ++count;
@@ -151,6 +152,7 @@ let _polyline;
                         endPoint.marker.remove();
                         count = 0;
                         requestButton.html('Set pickup');
+                        requestButton.prop('disabled', true);
                         break;
                 }
 
@@ -278,6 +280,7 @@ let _polyline;
             _polyline = null;
         }
         startPoint.marker?.remove();
+        count = 0;
     }
 
 
