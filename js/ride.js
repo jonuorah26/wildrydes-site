@@ -140,6 +140,7 @@ let count = 0;
                     case 2:
                         WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng], {color: 'green'}).addTo(map);
                         endPoint.marker = WildRydes.marker;
+                        endPoint.marker._icon.classList.add("huechange");
                         endPoint.point = e.latlng;
                         break;
                     default:

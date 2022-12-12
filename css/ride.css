@@ -55,3 +55,7 @@ html, body, #main, #map {
     word-wrap: break-word;
     width: 100%;
 }
+
+img.huechange { 
+    filter: hue-rotate(120deg); 
+}
