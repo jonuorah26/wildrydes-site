@@ -3,6 +3,7 @@
 var WildRydes = window.WildRydes || {};
 WildRydes.map = WildRydes.map || {};
 let map;
+let fare;
 
 (function rideScopeWrapper($) {
     var authToken;
@@ -110,7 +111,7 @@ let map;
                 shadowSize: [25, 25],
                 shadowAnchor: [22, 24]
             });
-            //WildRydes.unicorn = L.marker([loc.coords.latitude, loc.coords.longitude], {icon: myIcon}).addTo(map);
+            WildRydes.unicorn = L.marker([loc.coords.latitude, loc.coords.longitude], {icon: myIcon}).addTo(map);
             // WildRydes.marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
 
             // var popup = L.popup();
@@ -119,11 +120,12 @@ let map;
             let count = 0;
             let startPoint = {marker: null, point: null};
             let endPoint = {marker: null, point: null};
-            let fare
-
+            
 
             function onMapClick(e) {            //  TODO move to esri.js
                 ++count;
+                var requestButton = $('#request');
+                
                 if(count <= 2)
                 {
                     WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
@@ -134,6 +136,7 @@ let map;
                     case 1:
                       startPoint.marker =  WildRydes.marker;
                       startPoint.point = e.latlng;
+                      requestButton.html('Set drop-off');
                       break;
                     case 2:
                         endPoint.marker = WildRydes.marker;
@@ -143,12 +146,14 @@ let map;
                         startPoint.marker.remove();
                         endPoint.marker.remove();
                         count = 0;
+                        requestButton.html('Set pickup');
                         break;
                 }
 
-                if(count == 0)
+                if(count == 2)
                 {
                     fare = CalculateFare(startPoint.point, endPoint.point);
+                    handlePickupChanged();
                 }
                 //if (WildRydes.marker)       WildRydes.marker.remove();
                 //console.log("count: " + count)
@@ -162,7 +167,7 @@ let map;
                     count = 0;
                 }
                 */
-                handlePickupChanged();
+                
 
                 
 
@@ -225,7 +230,7 @@ let map;
     //      enable the Pickup button and set text to Request Unicorn
     function handlePickupChanged() {
         var requestButton = $('#request');
-        requestButton.html('Request Unicorn<br>Fare: $50.00');
+        requestButton.html('Request Unicorn<br>Fare: $' + fare.toFixed(2));
         requestButton.prop('disabled', false);
     }
 
